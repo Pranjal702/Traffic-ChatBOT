@@ -17,43 +17,22 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def load_aws_credentials():
-    """Use IAM role credentials automatically (ECS Task Role)."""
+    """Use ECS Task Role - no credentials file needed."""
     return None
-logger = logging.getLogger(__name__)
-
-st.set_page_config(page_title="Bedrock Chatbot", page_icon="🤖")
-st.title("Bedrock Knowledge Base Chatbot")
-st.write("Ask questions about your Amazon Bedrock knowledge base using Amazon Nova Micro.")
 
 def get_bedrock_clients():
-    """Create Bedrock clients with explicit credentials for each call (no caching)."""
-    logger.debug("Creating Bedrock clients with explicit credentials (no cache)...")
+    """Create Bedrock clients using ECS Task Role (automatic in Fargate)."""
     region = os.getenv("AWS_REGION", "us-east-1")
-
-    # Load credentials explicitly
-    creds = load_aws_credentials()
-    if not creds:
-        raise ValueError("Could not load AWS credentials from ~/.aws/credentials")
-
-    logger.debug(f"Loaded credentials for user. Region: {region}")
-
-    # Create session with explicit credentials
-    session = boto3.Session(
-        aws_access_key_id=creds['aws_access_key_id'],
-        aws_secret_access_key=creds['aws_secret_access_key'],
-        region_name=region
-    )
+    logger.debug(f"Creating Bedrock clients for region: {region}")
+    
     try:
-        sts = session.client('sts')
-        identity = sts.get_caller_identity()
-        logger.debug(f"✓ Credentials valid. Account: {identity['Account']}, User: {identity['Arn']}")
+        session = boto3.Session(region_name=region)
+        bedrock_runtime = session.client("bedrock-runtime", region_name=region)
+        agent_runtime = session.client("bedrock-agent-runtime", region_name=region)
+        return bedrock_runtime, agent_runtime
     except Exception as e:
-        logger.error(f"✗ Credential test failed: {e}")
+        logger.error(f"Failed to create Bedrock clients: {e}")
         raise
-
-    bedrock_runtime = session.client("bedrock-runtime", region_name=region)
-    agent_runtime = session.client("bedrock-agent-runtime", region_name=region)
-    return bedrock_runtime, agent_runtime
 
 def retrieve_context(query: str, kb_id: str):
     """Retrieve context from knowledge base and chunk longer passages."""
