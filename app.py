@@ -17,16 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def load_aws_credentials():
-    """Explicitly load AWS credentials from the credentials file."""
-    creds_file = os.path.expanduser("~/.aws/credentials")
-    config = configparser.ConfigParser()
-    config.read(creds_file)
-    
-    if 'default' in config:
-        return {
-            'aws_access_key_id': config['default'].get('aws_access_key_id'),
-            'aws_secret_access_key': config['default'].get('aws_secret_access_key'),
-        }
+    """Use IAM role credentials automatically (ECS Task Role)."""
     return None
 logger = logging.getLogger(__name__)
 
