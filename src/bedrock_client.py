@@ -130,7 +130,6 @@ class BedrockClient:
 
         prompt = (
             "You are a bilingual assistant. Answer in the same language as the question using ONLY the passages below. "
-            "Cite sources inline with the source ids (for example [SRC_1]). "
             "If the context mentions chapter titles or section names related to the question, use them to infer the topic. "
             "Keep the answer concise, factual, and based only on the provided context.\n\n"
             f"QUESTION:\n{query}\n\nPASSAGES:\n" + "\n\n".join(passage_texts) + "\n\nAnswer:"
