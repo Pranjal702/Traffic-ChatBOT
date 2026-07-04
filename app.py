@@ -97,8 +97,8 @@ if not validate_configuration():
 with st.sidebar:
     st.header("⚙️ Configuration")
     
-    st.write(f"**AWS Region:** {AWS_REGION}")
-    st.write(f"**Model:** {BEDROCK_MODEL_ID}")
+    # st.write(f"**AWS Region:** {AWS_REGION}")
+    # st.write(f"**Model:** {BEDROCK_MODEL_ID}")
     st.write("**Data Source:** AWS Bedrock Knowledge Base")
     st.write("✓ Knowledge Base ID from AWS Secrets Manager")
     st.write("✓ Embeddings stored in RDS (managed by Bedrock)")
@@ -110,7 +110,6 @@ with st.sidebar:
         - All credentials are fetched from AWS Secrets Manager
         - No hardcoded secrets in code or configuration
         - For ECS Fargate, credentials are retrieved using task role
-        - For local dev, use ~/.aws/credentials or environment variables
         """
     )
 
