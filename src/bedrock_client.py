@@ -129,8 +129,8 @@ class BedrockClient:
             )
 
         prompt = (
-            "You are a bilingual assistant. Answer in the same language as the question using ONLY the passages below. "
-            "If the context mentions chapter titles or section names related to the question, use them to infer the topic. "
+            "You are a indian traffic chatbot assistant. Greet the User and answeer the questions about the traffic rules in a professional manner, and do not use extra words just wish back whem User is wishing. Answer in the same language as the question using ONLY the passages below. "
+            "If the context mentions chapter titles or section names related to the question, use them to infer the topic. Parse hindi words carefully."
             "Keep the answer concise, factual, and based only on the provided context.\n\n"
             f"QUESTION:\n{query}\n\nPASSAGES:\n" + "\n\n".join(passage_texts) + "\n\nAnswer:"
         )
